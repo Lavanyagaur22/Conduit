@@ -2,6 +2,6 @@ package com.lavanya.conduit.fragments.user
 
 import androidx.lifecycle.ViewModel;
 
-class ProfileViewModel : ViewModel() {
+class UserViewModel : ViewModel() {
     // TODO: Implement the ViewModel
 }
