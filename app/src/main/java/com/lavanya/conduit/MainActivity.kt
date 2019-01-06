@@ -8,6 +8,8 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import com.lavanya.conduit.fragments.articles.EditArticleFragment
+import com.lavanya.conduit.fragments.home.HomeFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 
@@ -18,10 +20,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
+
 
         val toggle = ActionBarDrawerToggle(
             this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
@@ -30,6 +29,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
+
+
+        //Initially show the home fragment
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.frameLayout_main_container, HomeFragment.newInstance(), "MyFragment").commit()
     }
 
     override fun onBackPressed() {
@@ -58,9 +62,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
-        when (item.itemId) {
 
 
+        when (item.itemId) { //when returns the fragment here which can be used in let{}
+
+            R.id.menu_item_home -> HomeFragment.newInstance()
+            R.id.menu_item_new_article -> EditArticleFragment.newInstance()
+
+            else -> HomeFragment.newInstance()
+
+        }.let {
+            supportFragmentManager.beginTransaction().replace(R.id.frameLayout_main_container, it, "MyFragment")
+                .commit()
         }
 
         drawer_layout.closeDrawer(GravityCompat.START)
